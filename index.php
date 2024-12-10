@@ -2,9 +2,9 @@
 
 try {
     session_start();
-    $isLoggedIn = isset($_SESSION['user_id']);
+    $isLoggedIn = isset($_SESSION['IS_AUTH']);
     $buttonText = $isLoggedIn ? "Личный кабинет" : "Авторизация";
-    $redirectUrl = $isLoggedIn ? "profile.php" : "login.php";
+    $redirectUrl = $isLoggedIn ? "user_lk.php" : "login.html";
     $dsn = "pgsql:host=localhost;port=5432;dbname=postgres";
     $conn = new PDO($dsn, "postgres", "7746597Ss");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -27,7 +27,7 @@ try {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
@@ -48,7 +48,7 @@ try {
                     <button>🔍</button>
                 </div>
                 <div class="user-options">
-                    <button id="auth-button" data-url="<?= $redirectUrl; ?>">
+                    <button id="auth-button" onclick="redirectToAuth()" data-url="<?= $redirectUrl; ?>">
                         <?= $buttonText; ?>
                     </button>
                 </div>
@@ -100,9 +100,10 @@ try {
                             echo "</div>";
                         }
                     } else {
-                        echo "продукты не найдены";
+                        echo "Товары не найдены";
                     }
                     ?>
+
                 </div>
                 <script>
                     function addToCart(productId) {
@@ -115,26 +116,18 @@ try {
                         })
                             .then(response => response.json())
                             .then(data => {
-                                if (data.success) {
-                                    alert(data.message); // Уведомление об успешном добавлении
-                                } else {
-                                    alert(data.message); // Сообщение об ошибке или необходимости авторизации
-                                }
+                                alert(data.message);
                             })
                             .catch(error => {
                                 console.error('Ошибка при добавлении в корзину:', error);
                                 alert('Произошла ошибка. Попробуйте снова.');
                             });
                     }
-                    document.addEventListener('DOMContentLoaded', () => {
+                    function redirectToAuth() {
                         const authButton = document.getElementById('auth-button');
-                        if (authButton) {
-                            authButton.addEventListener('click', () => {
-                                const redirectUrl = authButton.getAttribute('data-url');
-                                window.location.href = redirectUrl;
-                            });
-                        }
-                    });
+                        const redirectUrl = authButton.getAttribute('data-url');
+                        window.location.href = redirectUrl;
+                    }
                 </script>
             </section>
         </main>

@@ -222,3 +222,21 @@ footer {
 .buy-button:hover {
     background-color: #218838;
 }
+
+#user-data {
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+#logout-button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logout-button:hover {
+    background-color: #0056b3;
+}
