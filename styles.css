@@ -30,6 +30,10 @@ html {
     margin: 0;
 }
 
+.logo {
+    cursor: pointer;
+}
+
 .search-bar {
     display: flex;
     align-items: center;
@@ -52,7 +56,7 @@ html {
     margin-left: 5px;
 }
 
-.user-options button,
+.user-options #auth-button,
 .user-options select {
     margin-left: 10px;
     padding: 5px 10px;
@@ -221,6 +225,30 @@ footer {
 
 .buy-button:hover {
     background-color: #218838;
+}
+
+.user-options #cart-button {
+    position: relative;
+    background-color: #555;
+    color: white;
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
+
+.user-options #cart-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 8px;
+    font-size: 9px;
+    font-weight: bold;
 }
 
 #user-data {

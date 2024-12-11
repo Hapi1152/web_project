@@ -27,7 +27,7 @@ $user = [
     <div id="content">
         <header>
             <div class="top-bar">
-                <div class="logo">
+                <div class="logo" onclick="redirectToPage('index.php')">
                     <h1>Логотип и название сайта</h1>
                 </div>
                 <div class="search-bar">
@@ -35,7 +35,13 @@ $user = [
                     <button>🔍</button>
                 </div>
                 <div class="user-options">
-                    <button>Личный кабинет</button>
+                    <button id="auth-button">Личный кабинет</button>
+                    <button id="cart-button" onclick="redirectToAuth()" data-url="<?= $redirectUrl; ?>">
+                        🛒
+                        <span id="cart-count">
+                            0
+                        </span>
+                    </button>
                 </div>
             </div>
             <nav class="main-nav">
@@ -82,7 +88,11 @@ $user = [
             </div>
         </div>
     </footer>
-
+    <script>
+        function redirectToPage(url) {
+            window.location.href = url;
+        }
+    </script>
 </body>
 
 </html>

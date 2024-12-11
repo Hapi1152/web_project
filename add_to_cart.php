@@ -1,14 +1,15 @@
 <?php
 session_start();
+header('Content-Type: application/json');
 try {
     $dsn = "pgsql:host=localhost;port=5432;dbname=postgres";
-    $conn = new PDO($dsn, "postgres", "7746597Ss");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO($dsn, "postgres", "7746597Ss");
+
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     echo "Ошибка подключения: " . $e->getMessage();
     exit;
 }
-header('Content-Type: application/json');
 
 if (!array_key_exists('IS_AUTH', $_SESSION)) {
     echo json_encode([
@@ -25,12 +26,16 @@ if (!isset($_POST['product_id'])) {
     ]);
     exit;
 }
-$productId = intval($_POST['product_id']);
+$product_id = intval($_POST['product_id']);
 
-if ($productId > 0) {
+if ($product_id > 0) {
     $user_id = $_SESSION['user_id'];
     try {
-        $stmt = $pdo->prepare("INSERT INTO cart (user_id, product_id) VALUES (:user_id, :product_id)");
+        $stmt = $pdo->prepare("INSERT INTO cart (user_id, product_id)
+                                      VALUES (:user_id, :product_id)
+                                      ON CONFLICT (user_id, product_id) DO UPDATE
+                                      SET quantity = cart.quantity + EXCLUDED.quantity;
+                                      ");
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
 
