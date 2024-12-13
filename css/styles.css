@@ -257,6 +257,28 @@ footer {
     padding: 20px;
 }
 
+.checkout-btn {
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cart-total>p {
+    font-weight: bold;
+}
+
+#cart-table button {
+    padding: 5px 10px;
+    background-color: #c01a1a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 #logout-button {
     padding: 10px 20px;
     background-color: #007BFF;

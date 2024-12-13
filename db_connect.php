@@ -34,4 +34,5 @@ function get_json($statement)
 
 $dsn = "pgsql:host=localhost;port=5432;dbname=postgres;";
 $pdo = new PDO($dsn, 'postgres', '7746597Ss');
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 ?>
