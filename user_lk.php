@@ -92,6 +92,32 @@ $user = [
         function redirectToPage(url) {
             window.location.href = url;
         }
+        document.addEventListener("DOMContentLoaded", function () {
+            const cartDataUrl = "get_cart_quantity.php";
+            function updateCartCount() {
+                fetch(cartDataUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            console.error("Ошибка: " + data.error);
+                            return;
+                        }
+
+                        const cartCountElement = document.getElementById("cart-count");
+                        if (data.status === 'unauthorized') {
+                            cartCountElement.style.display = "none";
+                        }
+                        else if (data.total_quantity > 0) {
+                            cartCountElement.textContent = data.total_quantity;
+                            cartCountElement.style.display = "block";
+                        } else {
+                            cartCountElement.style.display = "none";
+                        }
+                    })
+                    .catch(error => console.error("Ошибка при получении данных корзины: ", error));
+            }
+            updateCartCount();
+        });
     </script>
 </body>
 

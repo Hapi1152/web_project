@@ -103,7 +103,7 @@ try {
                             echo "<span class='category'>" . htmlspecialchars($row['category_name']) . "</span>";
                             echo "<p class='price'>" . htmlspecialchars($row['price']) . " руб.</p>";
                             echo "<h3>" . htmlspecialchars($row['name']) . "</h3>";
-                            echo "<button class='buy-button' onclick='addToCart(" . $row['id'] . ");updateCartCount()'>Купить</button>";
+                            echo "<button class='buy-button' onclick='addToCart(" . $row['id'] . ");'>Купить</button>";
                             echo "</div>";
                         }
                     } else {
@@ -113,20 +113,41 @@ try {
 
                 </div>
                 <script>
+                    function updateCartCount() {
+                        const cartDataUrl = "get_cart_quantity.php";
+                        fetch(cartDataUrl)
+                            .then(response => response.json())
+                            .then(data => {
+
+                                if (data.error) {
+                                    console.error("Ошибка: " + data.error);
+                                    return;
+                                }
+
+                                const cartCountElement = document.getElementById("cart-count");
+                                if (data.status === 'unauthorized') {
+                                    cartCountElement.style.display = "none";
+                                }
+                                else if (data.total_quantity > 0) {
+                                    cartCountElement.textContent = data.total_quantity;
+                                    cartCountElement.style.display = "block";
+                                } else {
+                                    cartCountElement.style.display = "none";
+                                }
+                            })
+                            .catch(error => console.error("Ошибка при получении данных корзины: ", error));
+                    }
                     function addToCart(productId) {
                         fetch('add_to_cart.php', {
-
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'
                             },
                             body: `product_id=${productId}`
-
                         })
                             .then(response => response.json())
                             .then(data => {
-                                alert(data.message);
-
+                                updateCartCount();
                             })
                             .catch(error => {
                                 console.error('Ошибка при добавлении в корзину:', error);
@@ -140,29 +161,6 @@ try {
                         window.location.href = redirectUrl;
                     }
                     document.addEventListener("DOMContentLoaded", function () {
-                        const cartDataUrl = "get_cart_quantity.php";
-                        function updateCartCount() {
-                            fetch(cartDataUrl)
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.error) {
-                                        console.error("Ошибка: " + data.error);
-                                        return;
-                                    }
-
-                                    const cartCountElement = document.getElementById("cart-count");
-                                    if (data.status === 'unauthorized') {
-                                        cartCountElement.style.display = "none";
-                                    }
-                                    else if (data.total_quantity > 0) {
-                                        cartCountElement.textContent = data.total_quantity;
-                                        cartCountElement.style.display = "block";
-                                    } else {
-                                        cartCountElement.style.display = "none";
-                                    }
-                                })
-                                .catch(error => console.error("Ошибка при получении данных корзины: ", error));
-                        }
                         updateCartCount();
                     });
 

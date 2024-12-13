@@ -241,6 +241,7 @@ footer {
 
 .user-options #cart-count {
     position: absolute;
+    display: none;
     top: -5px;
     right: -10px;
     background-color: red;
