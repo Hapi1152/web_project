@@ -35,8 +35,11 @@ $user = [
                     <button>🔍</button>
                 </div>
                 <div class="user-options">
+                    <button id="seller-button">
+                        Мои товары
+                    </button>
                     <button id="auth-button">Личный кабинет</button>
-                    <button id="cart-button" onclick="redirectToAuth()" data-url="<?= $redirectUrl; ?>">
+                    <button id="cart-button">
                         🛒
                         <span id="cart-count">
                             0

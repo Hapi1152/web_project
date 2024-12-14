@@ -48,6 +48,9 @@ try {
                     <button>🔍</button>
                 </div>
                 <div class="user-options">
+                    <button id="seller-button" onclick="redirectToSeller()" data-url="<?= $redirectUrl; ?>">
+                        Мои товары
+                    </button>
                     <button id="auth-button" onclick="redirectToAuth()" data-url="<?= $redirectUrl; ?>">
                         <?= $buttonText; ?>
                     </button>
@@ -159,6 +162,9 @@ try {
                         const authButton = document.getElementById('auth-button');
                         const redirectUrl = authButton.getAttribute('data-url');
                         window.location.href = redirectUrl;
+                    }
+                    function redirectToSeller() {
+                        window.location.href = "seller.php"
                     }
                     document.addEventListener("DOMContentLoaded", function () {
                         updateCartCount();
