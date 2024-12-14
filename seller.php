@@ -218,7 +218,6 @@ $user = [
                     if (!data.error) {
                         document.getElementById('edit-product-form').reset();
                         document.getElementById('edit-product-form').style.display = 'none';
-                        // Обновляем таблицу товаров
                         loadSellerProducts();
                     }
                 })
@@ -231,19 +230,14 @@ $user = [
         });
 
         function showEditForm(product) {
-            // Отображаем форму редактирования
             document.getElementById('edit-product-form').style.display = 'block';
             document.getElementById('add-product-form').style.display = 'none';
 
-            // Заполняем форму редактирования данными товара
             document.getElementById('edit-product-id').value = product.id;
             document.getElementById('edit-product-name').value = product.name;
             document.getElementById('edit-product-price').value = product.price;
             document.getElementById('edit-product-category').value = product.category_name;
             document.getElementById('edit-product-image-url').value = product.image_url;
-
-            // Скроллим страницу к форме
-            document.getElementById('edit-product-form').scrollIntoView({ behavior: 'smooth' });
         }
 
 
@@ -266,11 +260,6 @@ $user = [
                 })
                 .catch(error => console.error('Ошибка при загрузке категорий:', error));
         });
-
-
-        function editProduct(productId) {
-            // Реализуйте форму редактирования
-        }
 
         function deleteProduct(productId) {
             fetch('delete_product.php', {

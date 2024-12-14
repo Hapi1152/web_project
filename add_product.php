@@ -40,6 +40,5 @@ try {
     ]);
     echo json_encode(["error" => 0, "message" => "Товар добавлен."], JSON_UNESCAPED_UNICODE);
 } catch (PDOException $e) {
-    print ($e->getMessage());
     echo json_encode(["error" => 1, "errorMsg" => $e->getMessage()], JSON_UNESCAPED_UNICODE);
 }
