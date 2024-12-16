@@ -49,7 +49,7 @@ try {
         <header>
             <div class="top-bar">
                 <div class="logo">
-                    <h1>Логотип и название сайта</h1>
+                    <img src="goodgames_logo.png" alt="Логотип и название сайта">
                 </div>
                 <div class="search-bar">
                     <input type="text" placeholder="Поиск по товарам, категориям и продавцам">
@@ -89,19 +89,28 @@ try {
                 <h2>Популярные игры и сервисы</h2>
                 <div class="game-grid">
                     <div class="game-item">
-                        <img src="steam-logo.jpg" alt="Пополнение Steam">
+                        <img src="https://ggsel.net/_next/image?url=https%3A%2F%2Fggsel.net%2Fuploads%2Flanding_banner%2Fbig%2Fff531c202ae91290589429418583d937.jpg&w=384&q=75"
+                            alt="Пополнение Steam">
                         <p>Пополнение Steam</p>
                     </div>
                     <div class="game-item">
-                        <img src="riot-arcane.jpg" alt="Riot Games: Arcane">
-                        <p>Riot Games: Arcane</p>
+                        <img src="https://ggsel.net/_next/image?url=https%3A%2F%2Fggsel.net%2Fuploads%2Flanding_banner%2Fbig%2Ffbeeb62fab725818547221fd1158c8f1.png&w=384&q=75"
+                            alt="Stalker 2">
+                        <p>S.T.A.L.K.E.R 2: Heart of Chernobyl</p>
                     </div>
                     <div class="game-item">
-                        <img src="cod-black-ops.jpg" alt="Call of Duty: Black Ops 6">
-                        <p>Call of Duty: Black Ops 6</p>
+                        <img src="https://ggsel.net/_next/image?url=https%3A%2F%2Fggsel.net%2Fuploads%2Flanding_banner%2Fbig%2F1dde535eea58f1ec35f5652ae67ce461.jpg&w=384&q=75"
+                            alt="Xbox game pass">
+                        <p>XBOX Game Pass</p>
                     </div>
                     <div class="game-item">
-                        <img src="microsoft.jpg" alt="Microsoft">
+                        <img src="https://ggsel.net/_next/image?url=https%3A%2F%2Fggsel.net%2Fuploads%2Flanding_banner%2Fbig%2F6d30641c0f30e043e5607a49074aaf4a.png&w=384&q=75"
+                            alt="Adobe">
+                        <p>Adobe</p>
+                    </div>
+                    <div class="game-item">
+                        <img src="https://solutiontech.com.au/wp-content/uploads/2024/03/Microsoft-365-1-300x180.png"
+                            alt="Microsoft">
                         <p>Microsoft</p>
                     </div>
                 </div>

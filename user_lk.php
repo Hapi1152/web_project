@@ -32,7 +32,7 @@ $isSeller = in_array('Продавец', $roles);
         <header>
             <div class="top-bar">
                 <div class="logo" onclick="redirectToPage('index.php')">
-                    <h1>Логотип и название сайта</h1>
+                    <img src="goodgames_logo.png" alt="Логотип и название сайта">
                 </div>
                 <div class="search-bar">
                     <input type="text" placeholder="Поиск по товарам, категориям и продавцам">
@@ -150,8 +150,13 @@ $isSeller = in_array('Продавец', $roles);
         });
         function loadCart() {
             fetch('get_cart.php')
-                .then(response => response.json())
+                .then(response => {
+                    console.log(response);
+                    return response.json();
+
+                })
                 .then(data => {
+                    console.log(data)
                     if (data.error) {
                         alert(data.errorMsg);
                         return;
@@ -220,6 +225,9 @@ $isSeller = in_array('Продавец', $roles);
                 .catch(error => {
                     console.error('Ошибка оформления заказа:', error);
                 });
+        }
+        function redirectToSeller() {
+            window.location.href = "seller.php"
         }
         loadCart();
     </script>

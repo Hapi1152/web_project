@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require_once 'db_connect.php';
 if (!isset($_SESSION['IS_AUTH']) || $_SESSION['IS_AUTH'] !== true) {
     header('Location: login.html');
     exit;
@@ -11,6 +11,23 @@ $user = [
     "name" => $_SESSION['login'],
     "role" => $_SESSION['roles']
 ];
+if (!in_array('Администратор', $_SESSION['roles'])) {
+    header('Location: index.php');
+    exit;
+}
+$sql = "SELECT users.login AS user_login, users.name AS user_name,
+        STRING_AGG(roles.name, ', ') AS roles_list
+        FROM users
+        JOIN user_roles ON users.id = user_roles.user_id
+        JOIN roles ON user_roles.role_id = roles.id
+        GROUP BY users.id, users.login, users.name;";
+try {
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Ошибка выполнения запроса: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -59,8 +76,29 @@ $user = [
             </nav>
         </header>
         <main>
+
             <div id="seller-tools">
-                <h2>Ваши товары</h2>
+                <h1>Панель администратора</h1>
+                <h2>Все пользователи</h2>
+                <table class="users-table" border="3">
+                    <thead>
+                        <tr>
+                            <th>Логин</th>
+                            <th>Имя</th>
+                            <th>Роли</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($result as $row): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['user_login']); ?></td>
+                                <td><?php echo htmlspecialchars($row['user_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['roles_list']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <h2>Все товары</h2>
                 <table id="product-table" border="3">
                     <thead>
                         <tr>
@@ -73,39 +111,37 @@ $user = [
                     <tbody>
                     </tbody>
                 </table>
-                <button id="show-add-form">Добавить товар</button>
                 <form id="add-product-form" style="display: none;">
                     <h3>Добавить товар</h3>
-                    <label for="add-product-name">Название товара</label>
-                    <input type="text" id="add-product-name" name="name" required>
+                    <label for="add-product-name">Название товара</label><br>
+                    <input type="text" id="add-product-name" name="name" required><br>
 
-                    <label for="add-product-price">Цена</label>
-                    <input type="number" id="add-product-price" name="price" required>
+                    <label for="add-product-price">Цена</label><br>
+                    <input type="number" id="add-product-price" name="price" required><br>
 
-                    <label for="add-product-category">Категория</label>
-                    <select id="add-product-category" name="category_name" required></select>
+                    <label for="add-product-category">Категория</label><br>
+                    <select id="add-product-category" name="category_name" required></select><br>
 
-                    <label for="add-product-image-url">URL изображения</label>
-                    <input type="text" id="add-product-image-url" name="image_url" required>
+                    <label for="add-product-image-url">URL изображения</label><br>
+                    <input type="text" id="add-product-image-url" name="image_url" required><br>
 
                     <button type="submit">Добавить товар</button>
                 </form>
-
                 <form id="edit-product-form" style="display: none;">
                     <h3>Редактировать товар</h3>
-                    <input type="hidden" id="edit-product-id" name="id">
+                    <input type="hidden" id="edit-product-id" name="id"><br>
 
-                    <label for="edit-product-name">Название товара</label>
-                    <input type="text" id="edit-product-name" name="name" required>
+                    <label for="edit-product-name">Название товара</label><br>
+                    <input type="text" id="edit-product-name" name="name" required><br>
 
-                    <label for="edit-product-price">Цена</label>
-                    <input type="number" id="edit-product-price" name="price" required>
+                    <label for="edit-product-price">Цена</label><br>
+                    <input type="number" id="edit-product-price" name="price" required><br>
 
-                    <label for="edit-product-category">Категория</label>
-                    <select id="edit-product-category" name="category_name" required></select>
+                    <label for="edit-product-category">Категория</label><br>
+                    <select id="edit-product-category" name="category_name" required></select><br>
 
-                    <label for="edit-product-image-url">URL изображения</label>
-                    <input type="text" id="edit-product-image-url" name="image_url" required>
+                    <label for="edit-product-image-url">URL изображения</label><br>
+                    <input type="text" id="edit-product-image-url" name="image_url" required><br>
 
                     <button type="submit">Сохранить изменения</button>
                 </form>
@@ -139,7 +175,7 @@ $user = [
     </footer>
     <script>
         function loadSellerProducts() {
-            fetch('get_seller_products.php')
+            fetch('get_products_admin.php')
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -188,13 +224,7 @@ $user = [
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.error) {
-                        alert('Нельзя добавить два одинаковых товара!')
-                    }
-                    else {
-                        document.getElementById('message').textContent = data.message;
-                    }
-
+                    document.getElementById('message').textContent = data.error ? `Ошибка: ${data.errorMsg} ` : data.message;
                     if (!data.error) {
                         document.getElementById('add-product-form').reset();
                         document.getElementById('add-product-form').style.display = 'none'
@@ -228,12 +258,6 @@ $user = [
                     }
                 })
                 .catch(error => console.error('Ошибка при редактировании товара:', error));
-        });
-
-        document.getElementById('show-add-form').addEventListener('click', function () {
-            document.getElementById('message').textContent = '';
-            document.getElementById('add-product-form').style.display = 'block';
-            document.getElementById('edit-product-form').style.display = 'none';
         });
 
         function showEditForm(product) {
