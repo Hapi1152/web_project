@@ -38,8 +38,8 @@ $user = [
                     <button id="seller-button">
                         Мои товары
                     </button>
-                    <button id="auth-button">Личный кабинет</button>
-                    <button id="cart-button">
+                    <button id="auth-button" onclick="redirectToPage('user_lk.php')">Личный кабинет</button>
+                    <button id="cart-button" onclick="redirectToPage('user_lk.php')">
                         🛒
                         <span id="cart-count">
                             0

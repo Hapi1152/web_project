@@ -11,6 +11,10 @@ $user = [
     "name" => $_SESSION['login'],
     "role" => $_SESSION['roles']
 ];
+include("find_roles.php");
+$user_id = $_SESSION['user_id'];
+$roles = get_roles($user_id);
+$isSeller = in_array('Продавец', $roles);
 ?>
 
 <!DOCTYPE html>
@@ -35,9 +39,11 @@ $user = [
                     <button>🔍</button>
                 </div>
                 <div class="user-options">
-                    <button id="seller-button">
-                        Мои товары
-                    </button>
+                    <?php if ($isSeller): ?>
+                        <button id="seller-button" onclick="redirectToSeller()" data-url="<?= $redirectUrl; ?>">
+                            Мои товары
+                        </button>
+                    <?php endif; ?>
                     <button id="auth-button">Личный кабинет</button>
                     <button id="cart-button">
                         🛒

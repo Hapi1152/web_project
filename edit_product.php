@@ -26,14 +26,13 @@ $category_id = $category['id'];
 try {
     $stmt = $pdo->prepare("UPDATE products
                            SET name = :name, price = :price, category_id = :category_id, image_url = :image_url
-                           WHERE id = :id AND seller_id = :seller_id");
+                           WHERE id = :id");
     $stmt->execute([
         ':name' => $data['name'],
         ':price' => $data['price'],
         ':category_id' => $category_id,
         ':image_url' => $data['image_url'],
-        ':id' => $data['id'],
-        ':seller_id' => $user_id
+        ':id' => $data['id']
     ]);
     echo json_encode(["error" => 0, "message" => "Товар обновлен."], JSON_UNESCAPED_UNICODE);
 } catch (PDOException $e) {

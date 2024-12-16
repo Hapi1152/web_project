@@ -8,6 +8,14 @@ try {
     $dsn = "pgsql:host=localhost;port=5432;dbname=postgres";
     $conn = new PDO($dsn, "postgres", "7746597Ss");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    if ($isLoggedIn) {
+        include("find_roles.php");
+        $user_id = $_SESSION['user_id'];
+        $roles = get_roles($user_id);
+        $isSeller = in_array('Продавец', $roles);
+    } else {
+        $isSeller = false;
+    }
 } catch (PDOException $e) {
     echo "Ошибка подключения: " . $e->getMessage();
     exit;
@@ -48,9 +56,11 @@ try {
                     <button>🔍</button>
                 </div>
                 <div class="user-options">
-                    <button id="seller-button" onclick="redirectToSeller()" data-url="<?= $redirectUrl; ?>">
-                        Мои товары
-                    </button>
+                    <?php if ($isSeller): ?>
+                        <button id="seller-button" onclick="redirectToSeller()" data-url="<?= $redirectUrl; ?>">
+                            Мои товары
+                        </button>
+                    <?php endif; ?>
                     <button id="auth-button" onclick="redirectToAuth()" data-url="<?= $redirectUrl; ?>">
                         <?= $buttonText; ?>
                     </button>
